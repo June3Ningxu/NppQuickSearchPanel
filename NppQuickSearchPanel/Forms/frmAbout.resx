@@ -117,10 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="tsListMgmt.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="ssSearchResult.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>129, 17</value>
-  </metadata>
+  <data name="lblAbout.Text" xml:space="preserve">
+    <value>NppQuickSearchPanel, Copyright 2015
+Created by Tianxing Li ( litianxing9@gmail.com )
+
+Press "Show QuickSearchPanel" in the menu or toolbar to get started.
+
+For help, info and updates, visit the site by clicking the "Visit site" button below.</value>
+  </data>
 </root>

@@ -19,7 +19,7 @@ namespace NppQuickSearchPanel
         static Bitmap tbBmp = Properties.Resources.magnifier;
         static Bitmap tbBmp_tbTab = Properties.Resources.magnifier_bmp;
         static Icon tbIcon = null;
-        public const string PluginVersion = "0.8.5";
+        public const string PluginVersion = "0.8.8";
         #endregion
 
         #region " StartUp/CleanUp "
@@ -32,7 +32,7 @@ namespace NppQuickSearchPanel
             LoadConfig(iniFilePath);
 
             PluginBase.SetCommand(0, "Show QuickSearchPanel", ShowMain); idMyDlg = 0;
-            PluginBase.SetCommand(1, "Help && About", ShowHelp, new ShortcutKey(false, false, false, Keys.None));
+            PluginBase.SetCommand(1, "About", ShowHelp, new ShortcutKey(false, false, false, Keys.None));
         }
         internal static void SetToolBarIcon()
         {
@@ -45,14 +45,16 @@ namespace NppQuickSearchPanel
         }
         internal static void PluginCleanUp()
         {
-            if (frmMain.Visible)
-                Settings.Configs.showOnStartup = true;
-            else
-                Settings.Configs.showOnStartup = false;
-
             if (frmMain != null)
+            {
+                if (frmMain.Visible)
+                    Settings.Configs.showOnStartup = true;
+                else
+                    Settings.Configs.showOnStartup = false;
+                
                 frmMain.Close();
-
+            }
+            
             SaveConfig(iniFilePath);
         }
         internal static void LoadConfig(string iniFilePath)
@@ -70,7 +72,9 @@ namespace NppQuickSearchPanel
         #region " Menu functions "
         internal static void ShowHelp()
         {
-            MessageBox.Show("NppQuickSearchPanel v" + PluginVersion + "\nCreated by Tianxing Li ( litianxing9@gmail.com )");
+            frmAbout about = new frmAbout();
+            about.Text = PluginName + " v" + PluginVersion;
+            about.ShowDialog();
         }
         internal static void ShowMain()
         {
@@ -119,5 +123,9 @@ namespace NppQuickSearchPanel
             }
         }
         #endregion
+
+        public static int getDlgId() {
+            return idMyDlg;
+        }
     }
 }

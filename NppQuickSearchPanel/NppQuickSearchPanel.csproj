@@ -10,7 +10,7 @@
     <RootNamespace>NppQuickSearchPanel</RootNamespace>
     <AssemblyName>NppQuickSearchPanel</AssemblyName>
     <OutputPath>bin\Debug\</OutputPath>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
@@ -45,6 +46,12 @@
   <ItemGroup>
     <Compile Include="DllExport\DllExportAttribute.cs" />
     <Compile Include="Entry.cs" />
+    <Compile Include="Forms\frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmQuickSearchPanel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +72,9 @@
     <Compile Include="UnmanagedExports.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmQuickSearchPanel.resx">
       <DependentUpon>frmQuickSearchPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -75,49 +85,49 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\search.png" />
+    <None Include="Resources\help.rtf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\search_bmp.bmp" />
+    <None Include="Resources\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\add.png" />
+    <None Include="Resources\arrow_down.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\delete.png" />
+    <None Include="Resources\arrow_up.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\disk.png" />
+    <None Include="Resources\delete.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\folder_page_white.png" />
+    <None Include="Resources\delete_repeat.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\magnifier.png" />
+    <None Include="Resources\disk.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\magnifier_bmp.bmp" />
+    <None Include="Resources\folder_page_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\page_find.png" />
+    <None Include="Resources\magnifier.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\resultset_next.png" />
+    <None Include="Resources\magnifier_bmp.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\resultset_previous.png" />
+    <None Include="Resources\page_find.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\arrow_down.png" />
+    <None Include="Resources\resultset_next.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\arrow_up.png" />
+    <None Include="Resources\resultset_previous.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\delete_repeat.bmp" />
+    <None Include="Resources\search.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\delete_repeat.png" />
+    <None Include="Resources\search_bmp.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\DllExport\NppPlugin.DllExport.targets" />

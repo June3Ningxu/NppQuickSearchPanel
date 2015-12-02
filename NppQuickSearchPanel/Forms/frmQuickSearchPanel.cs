@@ -6,13 +6,17 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Linq;
 using NppPluginNET;
 
 namespace NppQuickSearchPanel
 {
     public partial class frmQuickSearch : Form
     {
-        BindingList<Entry> entryList = new BindingList<Entry>(); 
+        BindingList<Entry> entryList = new BindingList<Entry>();
+        int lastSelectedIndex = -1;
+        bool combineMode = false;
+        string combinedSearchText = "";
 
         public frmQuickSearch()
         {
@@ -162,32 +166,102 @@ namespace NppQuickSearchPanel
         private void lstEntry_MouseDown(object sender, MouseEventArgs e)
         {
             int index = lstEntry.IndexFromPoint(e.X, e.Y);
+            bool isSelectedIndexChanged = false;
+
             if (index < 0)
                 return;
+            else if (index != lastSelectedIndex)
+            {
+                isSelectedIndexChanged = true;
+                lastSelectedIndex = index;
+                tsslSearchResult.Text = "Click to search. Ctrl + Click to launch Find dialog.";
+                tsslSearchResult.ForeColor = Color.Black;
+            }
 
-            Entry keywords = entryList[index];
-            IntPtr curScintilla = PluginBase.GetCurrentScintilla();
-
+            Entry keyword = entryList[index];
+            if (combineMode)
+            {
+                if (combinedSearchText == "")
+                {
+                    combinedSearchText = "(" + keyword + ")";
+                }
+                else
+                {
+                    combinedSearchText = combinedSearchText + "|(" + keyword + ")";
+                }
+                
+                tsslSearchResult.Text = "Combine: " + combinedSearchText;
+            }
             if ((ModifierKeys & Keys.Control) == Keys.Control)
             {
                 lstEntry.SetSelected(index, true);
-                Clipboard.SetText(keywords.ToString());
+                Clipboard.SetText(keyword.ToString());
+                Win32.SendMessage(PluginBase.nppData._nppHandle, NppMsg.NPPM_MENUCOMMAND, 0, NppMenuCmd.IDM_SEARCH_FIND);
+                SendKeys.SendWait("^{v}");
             }
             else if ((ModifierKeys & Keys.Shift) == Keys.Shift)
             {
                 using(Scintilla sci = new Scintilla())
                 {
-                    int pos = sci.SearchBackward(keywords.ToString(), 
-                        keywords.Type == KeywordsType.RegExp, chkMatchWord.Checked, chkMatchCase.Checked, chkWrap.Checked);
+                    int pos = sci.SearchBackward(keyword.ToString(), 
+                        keyword.Type == KeywordsType.RegExp, chkMatchWord.Checked, chkMatchCase.Checked, chkWrap.Checked);
+                    updateSearchResult(sci, pos);
                 }
             }
             else
             {
-                using (Scintilla sci = new Scintilla())
+                if (!isSelectedIndexChanged)
                 {
-                    int pos = sci.SearchForward(keywords.ToString(), 
-                        keywords.Type == KeywordsType.RegExp, chkMatchWord.Checked, chkMatchCase.Checked, chkWrap.Checked);
+                    using (Scintilla sci = new Scintilla())
+                    {
+                        int pos = sci.SearchForward(keyword.ToString(),
+                            keyword.Type == KeywordsType.RegExp, chkMatchWord.Checked, chkMatchCase.Checked, chkWrap.Checked);
+                        updateSearchResult(sci, pos);
+                    }
                 }
+            }
+        }
+
+        private void updateSearchResult(Scintilla sci, int pos) 
+        {
+            if (pos < 0)
+            {
+                tsslSearchResult.Text = "Couldn't find the keyword.";
+                tsslSearchResult.ForeColor = Color.Red;
+            }
+            else
+            {
+                int line = sci.GetLineFromPosition(pos);
+                tsslSearchResult.Text = "Found at line " + (line + 1) + ".";
+                tsslSearchResult.ForeColor = Color.Green;
+            }
+        }
+
+        private void lstEntry_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                int index = lstEntry.SelectedIndex;
+                if (index >= 0)
+                    entryList.RemoveAt(index);
+            }
+            else if (e.KeyCode == Keys.Tab)
+            {
+                if (combineMode)
+                {
+                    tsslSearchResult.Text = "";
+                    Clipboard.SetText(combinedSearchText);
+                    Win32.SendMessage(PluginBase.nppData._nppHandle, NppMsg.NPPM_MENUCOMMAND, 0, NppMenuCmd.IDM_SEARCH_FIND);
+                    SendKeys.SendWait("^{v}");
+                }
+                else
+                {
+                    tsslSearchResult.Text = "Combine: ";
+                    combinedSearchText = "";
+                }
+                combineMode = !combineMode;
+                // MessageBox.Show("Alt is down");
+                e.Handled = true;
             }
         }
 
@@ -217,32 +291,17 @@ namespace NppQuickSearchPanel
 
         private void tsbRemoveDuplItem_Click(object sender, EventArgs e)
         {
-            DialogResult MsgBoxResult;
-            if (entryList.Count <= 0)
-            {
-                return;
-            }
-            MsgBoxResult = MessageBox.Show("You are trying to remove the duplicated search list.\nAre you Sure?",
-                "Prompt",
+            DialogResult MsgBoxResult = MessageBox.Show(
+                "Are you sure you want to delete duplicated keywords in the list?",
+                "Delete duplicated keywords",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Exclamation,
                 MessageBoxDefaultButton.Button1);
+
             if (MsgBoxResult == DialogResult.Yes)
             {
-                for(int index = 0;index < entryList.Count-1;index++)
-                {
-                    for (int j = index;j >= 0;j--)
-                    {
-                        if (entryList[index+1].ToString().Equals(entryList[j].ToString()))
-                        {
-                            entryList.RemoveAt(index+1);
-                            index--;
-                            break;
-                        }
-                            
-                    }    
-                }
-                
+                entryList = new BindingList<Entry>(entryList.Distinct().ToList());
+                lstEntry.DataSource = entryList;
             }
         }
 
@@ -255,7 +314,8 @@ namespace NppQuickSearchPanel
 
             string listFileName = Path.Combine(Settings.ConfigDir, Main.PluginName + ".xml");
             SaveListToFile(listFileName);
-        }
+
+       }
 
         private void lstEntry_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -265,6 +325,14 @@ namespace NppQuickSearchPanel
             txtKeywords.Text = entryList[index].Keywords;
             rbtnRegExp.Checked = entryList[index].Type == KeywordsType.RegExp;
             rbtnNromal.Checked = !rbtnRegExp.Checked;
+        }
+
+        private void frmQuickSearch_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!this.Visible)
+            {
+                Win32.SendMessage(PluginBase.nppData._nppHandle, NppMsg.NPPM_SETMENUITEMCHECK, PluginBase._funcItems.Items[Main.getDlgId()]._cmdID, 0);
+            }
         }
     }
 }

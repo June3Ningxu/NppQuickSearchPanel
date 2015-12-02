@@ -25,17 +25,18 @@ Copy the **NppQuickSearchPanel.dll** to the **plugins** folder in your Notepad++
 
 Open up Notepad++, click the ![pluginicon][2]**Show QuickSearchPanel** button in the toolbar, or use menu **Plugins / NppQuickSearchPanel / Show QuickSearchPanel**.
 
-- Input keyword in the text box. Click ![add][3]**add** button or just press <kbd>**Enter**</kbd> to add the keyword to the list. 
-- <kbd>**Click**</kbd> on the keyword in the list to search forward. <kbd>**Shift**</kbd> + <kbd>**Click**</kbd> to search backward. <kbd>**Ctrl**</kbd> + <kbd>**Click**</kbd> to copy to clipboard.
-- Use ![remove][4]**remove** button to remove the selected keyword. You can also change the order of selected keyword by using ![moveup][5]**Move up** and ![movedown][6]**Move down**.
+- Input keyword in the text box. Click ![add][3]**Add** button or just press <kbd>**Enter**</kbd> to add the keyword to the list. 
+- <kbd>**Click**</kbd> on the keyword in the list to search forward. <kbd>**Shift**</kbd> + <kbd>**Click**</kbd> to search backward. 
+- <kbd>**Ctrl**</kbd> + <kbd>**Click**</kbd> on the keyword to launch Notepad++ Find dialog with selected keyword pasted in "Find what" automatically.
+- Use ![remove][4]**Remove** button to remove the selected keyword. You can also change the order of selected keyword by using ![moveup][5]**Move up** and ![movedown][6]**Move down**.
 - Use ![import][7]**Import**/![export][8]**Export** to load/save current keywords list.
 
 
 ## How to build
 
-Open the project with Visual Studio 2013 or later. If you encounter a "The system cannot find the file specified" error when building the project, add the location of **NETFX 4.5.1 Tools** to your **Path** environment variable. 
+Build with Visual Studio 2013 or later. If you encounter a "The system cannot find the file specified" error when building the project, add the location of **NETFX Tools** to your **Path** environment variable. 
 
-For 64-bit system, the typical location of **NETFX 4.5.1 Tools** is 
+For 64-bit system and Visual Studio 2013, the typical location of **NETFX Tools** is 
 ```
 C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
 ```
@@ -46,9 +47,15 @@ C:\Program Files\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
 ```
 
 
+## Contributors
+
+- [nex3z](https://github.com/nex3z)
+- [June3Ningxu](https://github.com/June3Ningxu)
+
+
 ## Credits
 
-- NppPlugin.NET.v0.6, the C# Notepad++ plugin template is brought to you by ufo-pu55y at [here][9].
+- [NppPlugin.NET.v0.6][9], the C# Notepad++ plugin template is brought to you by ufo-pu55y.
 - The nice toolbar icons come from [famfamfam.com][10], under [Creative Commons Attribution 3.0 License][11].
 
 
@@ -58,14 +65,14 @@ Notepad++ is a free (as in "free speech" and also as in "free beer") source code
 For more information, please refer to the [official site][12].
 
 
-  [1]: http://blog.nex3z.com/wp-content/uploads/2015/05/screenshot.png
-  [2]: http://blog.nex3z.com/wp-content/uploads/2015/05/magnifier.png
-  [3]: http://blog.nex3z.com/wp-content/uploads/2015/05/add.png
-  [4]: http://blog.nex3z.com/wp-content/uploads/2015/05/delete.png
-  [5]: http://blog.nex3z.com/wp-content/uploads/2015/05/arrow_up.png
-  [6]: http://blog.nex3z.com/wp-content/uploads/2015/05/arrow_down.png
-  [7]: http://blog.nex3z.com/wp-content/uploads/2015/05/folder_page_white.png
-  [8]: http://blog.nex3z.com/wp-content/uploads/2015/05/disk.png
+  [1]: images/screenshot.png
+  [2]: images/icons/magnifier.png
+  [3]: images/icons/add.png
+  [4]: images/icons/delete.png
+  [5]: images/icons/arrow_up.png
+  [6]: images/icons/arrow_down.png
+  [7]: images/icons/folder_page_white.png
+  [8]: images/icons/disk.png
   [9]: http://sourceforge.net/projects/sourcecookifier/files/other%20plugins/
   [10]: http://www.famfamfam.com/    "famfamfam.com"
   [11]: http://creativecommons.org/licenses/by/2.5/    "Creative Commons Attribution 3.0 License"

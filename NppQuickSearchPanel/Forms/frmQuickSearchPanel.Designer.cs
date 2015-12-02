@@ -48,10 +48,13 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbImport = new System.Windows.Forms.ToolStripButton();
             this.tsbExport = new System.Windows.Forms.ToolStripButton();
+            this.ssSearchResult = new System.Windows.Forms.StatusStrip();
+            this.tsslSearchResult = new System.Windows.Forms.ToolStripStatusLabel();
             this.tlpDlg.SuspendLayout();
             this.flpMatchOption.SuspendLayout();
             this.flpSearchMode.SuspendLayout();
             this.tsListMgmt.SuspendLayout();
+            this.ssSearchResult.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpDlg
@@ -63,16 +66,17 @@
             this.tlpDlg.Controls.Add(this.flpSearchMode, 0, 2);
             this.tlpDlg.Controls.Add(this.lstEntry, 0, 4);
             this.tlpDlg.Controls.Add(this.tsListMgmt, 0, 3);
+            this.tlpDlg.Controls.Add(this.ssSearchResult, 0, 5);
             this.tlpDlg.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpDlg.Location = new System.Drawing.Point(0, 0);
             this.tlpDlg.Name = "tlpDlg";
-            this.tlpDlg.RowCount = 5;
+            this.tlpDlg.RowCount = 6;
             this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpDlg.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpDlg.Size = new System.Drawing.Size(402, 497);
             this.tlpDlg.TabIndex = 0;
             // 
@@ -172,10 +176,11 @@
             this.lstEntry.ItemHeight = 14;
             this.lstEntry.Location = new System.Drawing.Point(3, 109);
             this.lstEntry.Name = "lstEntry";
-            this.lstEntry.Size = new System.Drawing.Size(396, 385);
+            this.lstEntry.Size = new System.Drawing.Size(396, 363);
             this.lstEntry.TabIndex = 8;
             this.lstEntry.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstEntry_DrawItem);
             this.lstEntry.SelectedIndexChanged += new System.EventHandler(this.lstEntry_SelectedIndexChanged);
+            this.lstEntry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstEntry_KeyDown);
             this.lstEntry.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstEntry_MouseDown);
             // 
             // tsListMgmt
@@ -242,9 +247,9 @@
             this.tsbMoveDown.Size = new System.Drawing.Size(23, 20);
             this.tsbMoveDown.Text = "Move down";
             this.tsbMoveDown.Click += new System.EventHandler(this.tsbMoveDown_Click);
-            //
-            //tsbRemoveDuplItem
-            //
+            // 
+            // tsbRemoveDuplItem
+            // 
             this.tsbRemoveDuplItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbRemoveDuplItem.Image = global::NppQuickSearchPanel.Properties.Resources.delete_repeat;
             this.tsbRemoveDuplItem.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -278,6 +283,24 @@
             this.tsbExport.Text = "Export";
             this.tsbExport.Click += new System.EventHandler(this.tsbExport_Click);
             // 
+            // ssSearchResult
+            // 
+            this.ssSearchResult.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslSearchResult});
+            this.ssSearchResult.Location = new System.Drawing.Point(0, 475);
+            this.ssSearchResult.Name = "ssSearchResult";
+            this.ssSearchResult.Size = new System.Drawing.Size(402, 22);
+            this.ssSearchResult.TabIndex = 10;
+            this.ssSearchResult.Text = "statusStrip1";
+            // 
+            // tsslSearchResult
+            // 
+            this.tsslSearchResult.Name = "tsslSearchResult";
+            this.tsslSearchResult.Size = new System.Drawing.Size(387, 17);
+            this.tsslSearchResult.Spring = true;
+            this.tsslSearchResult.Text = "Click to search. Ctrl + Click to launch Find dialog.";
+            this.tsslSearchResult.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // frmQuickSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -287,6 +310,7 @@
             this.Name = "frmQuickSearch";
             this.Text = "Quick Search Panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmQuickSearch_FormClosing);
+            this.VisibleChanged += new System.EventHandler(this.frmQuickSearch_VisibleChanged);
             this.tlpDlg.ResumeLayout(false);
             this.tlpDlg.PerformLayout();
             this.flpMatchOption.ResumeLayout(false);
@@ -295,6 +319,8 @@
             this.flpSearchMode.PerformLayout();
             this.tsListMgmt.ResumeLayout(false);
             this.tsListMgmt.PerformLayout();
+            this.ssSearchResult.ResumeLayout(false);
+            this.ssSearchResult.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -321,6 +347,8 @@
         private System.Windows.Forms.ToolStripButton tsbExport;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.StatusStrip ssSearchResult;
+        private System.Windows.Forms.ToolStripStatusLabel tsslSearchResult;
 
     }
 }
